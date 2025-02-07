@@ -8,8 +8,11 @@ dotenv.config({
 });
 
 const app = express();
-
 const PORT = process.env.PORT || 8001;
+
+// middlewares
+
+app.use(express.json()); // to parse json body
 
 // import routes
 
