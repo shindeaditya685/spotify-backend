@@ -8,6 +8,7 @@ const authCallback = async (req, res) => {
     const user = await User.findOne({ clerkId: id });
 
     if (!user) {
+      // sign up
       await User.create({
         clerkId: id,
         fullName: `${firstName} ${lastName}`,
