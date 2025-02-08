@@ -21,5 +21,8 @@ export const requireAdmin = async (req, res, next) => {
       res.status(403).json({ message: "Unauthorized - you must be an admin" });
     }
     next();
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error in requireAdmin auth middleware: ", error);
+    next(error);
+  }
 };
