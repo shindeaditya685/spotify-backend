@@ -34,9 +34,9 @@ app.use(
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import adminRouts from "./routes/admin.route.js";
-import songsRoutes from "./routes/songs.route.js";
-import albumsRoutes from "./routes/albums.route.js";
-import statsRoutes from "./routes/stats.route.js";
+import songsRoutes from "./routes/song.route.js";
+import albumsRoutes from "./routes/album.route.js";
+import statsRoutes from "./routes/stat.route.js";
 
 // use routes
 
@@ -61,3 +61,5 @@ app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
   connectDB();
 });
+
+/// TODO: Socket.io implementation
