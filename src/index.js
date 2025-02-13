@@ -5,6 +5,8 @@ import fileUpload from "express-fileupload";
 import path from "path";
 import cors from "cors";
 import { initializeSocket } from "./lib/socket.js";
+import cron from "node-cron";
+import fs from "fs";
 
 import { connectDB } from "./lib/db.js";
 
@@ -41,6 +43,22 @@ app.use(
   })
 );
 
+// cron jobs
+const tempDir = path.join(process.cwd(), "tmp");
+cron.schedule("0 * * * *", () => {
+  if (fs.existsSync(tempDir)) {
+    fs.readdir(tempDir, (err, files) => {
+      if (err) {
+        console.log("error", err);
+        return;
+      }
+      for (const file of files) {
+        fs.unlink(path.join(tempDir, file), (err) => {});
+      }
+    });
+  }
+});
+
 // import routes
 
 import userRoutes from "./routes/user.route.js";
@@ -59,6 +77,13 @@ app.use("/api/admin", adminRouts);
 app.use("/api/songs", songsRoutes);
 app.use("/api/albums", albumsRoutes);
 app.use("/api/stats", statsRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
+  });
+}
 
 // error handler
 app.use((error, req, res, next) => {
