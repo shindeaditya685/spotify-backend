@@ -1,14 +1,10 @@
+import { Album } from "../models/album.model.js";
 import { Song } from "../models/song.model.js";
 import { User } from "../models/user.model.js";
-import { Album } from "../models/album.model.js";
 
 export const getStats = async (req, res, next) => {
   try {
-    // const totalSongs = await Song.countDouments();
-    // const totalUsers = await User.countDouments();
-    // const totalAlbum = await Album.countDouments();
-
-    const [totalSongs, totalUsers, totalAlbums, uniqueArtists] =
+    const [totalSongs, totalAlbums, totalUsers, uniqueArtists] =
       await Promise.all([
         Song.countDocuments(),
         Album.countDocuments(),
@@ -39,7 +35,6 @@ export const getStats = async (req, res, next) => {
       totalArtists: uniqueArtists[0]?.count || 0,
     });
   } catch (error) {
-    console.log("Error in getStats: ", error);
     next(error);
   }
 };

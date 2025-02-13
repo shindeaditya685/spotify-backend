@@ -7,8 +7,8 @@ const uploadToCloudinary = async (file) => {
     });
     return result.secure_url;
   } catch (error) {
-    console.log("Error in uploadCloudinary: ", error);
-    throw new Error("Error while uploading to cloudinary: ", error);
+    console.log("Error in uploadToCloudinary", error);
+    throw new Error("Error uploading to cloudinary");
   }
 };
 

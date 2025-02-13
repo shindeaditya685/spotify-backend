@@ -5,7 +5,7 @@ import uploadToCloudinary from "../lib/uploadToCloudinary.js";
 export const createSong = async (req, res, next) => {
   try {
     if (!req.files || !req.files.audioFile || !req.files.imageFile) {
-      return res.status(400).json({ message: "Please upload all files." });
+      return res.status(400).json({ message: "Please upload all files" });
     }
 
     const { title, artist, albumId, duration } = req.body;
@@ -32,10 +32,9 @@ export const createSong = async (req, res, next) => {
         $push: { songs: song._id },
       });
     }
-
     res.status(201).json(song);
   } catch (error) {
-    console.log("Error in createSong controller: ", error);
+    console.log("Error in createSong", error);
     next(error);
   }
 };
@@ -43,6 +42,7 @@ export const createSong = async (req, res, next) => {
 export const deleteSong = async (req, res, next) => {
   try {
     const { id } = req.params;
+
     const song = await Song.findById(id);
 
     // if song belongs to an album, update the album's songs array
@@ -56,7 +56,7 @@ export const deleteSong = async (req, res, next) => {
 
     res.status(200).json({ message: "Song deleted successfully" });
   } catch (error) {
-    console.log("Error in deleteSong: ", error);
+    console.log("Error in deleteSong", error);
     next(error);
   }
 };
@@ -66,7 +66,7 @@ export const createAlbum = async (req, res, next) => {
     const { title, artist, releaseYear } = req.body;
     const { imageFile } = req.files;
 
-    const imageUrl = uploadToCloudinary(imageFile);
+    const imageUrl = await uploadToCloudinary(imageFile);
 
     const album = new Album({
       title,
@@ -76,9 +76,10 @@ export const createAlbum = async (req, res, next) => {
     });
 
     await album.save();
+
     res.status(201).json(album);
   } catch (error) {
-    console.log("Error in createAlbum: ", error);
+    console.log("Error in createAlbum", error);
     next(error);
   }
 };
@@ -90,7 +91,7 @@ export const deleteAlbum = async (req, res, next) => {
     await Album.findByIdAndDelete(id);
     res.status(200).json({ message: "Album deleted successfully" });
   } catch (error) {
-    console.log("Error in deleteAlbum: ", error);
+    console.log("Error in deleteAlbum", error);
     next(error);
   }
 };
